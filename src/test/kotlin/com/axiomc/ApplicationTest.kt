@@ -15,7 +15,7 @@ import com.axiomc.plugins.*
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication({ configureRouting(base) }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Hello World!", response.content)
