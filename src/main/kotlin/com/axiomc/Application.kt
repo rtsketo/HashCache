@@ -1,31 +1,44 @@
 package com.axiomc
 
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import com.axiomc.plugins.*
+import com.axiomc.backend.Cache.garbageCollect
+import com.axiomc.backend.Time.min
+import com.axiomc.plugins.configureCache
+import com.axiomc.plugins.configureHTTP
+import com.axiomc.plugins.configureMonitoring
+import com.axiomc.plugins.configureRouting
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.erdtman.jcs.JsonCanonicalizer
 import java.math.BigInteger
 import java.security.MessageDigest
 
+const val JSON_CANONICALIZATION = false
 val client = HttpClient(CIO) {
     install(HttpTimeout) {
         requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
     } }
 
-const val JSON_CANONICALIZATION = false
 
-fun main(vararg args: String) {
+fun main() {
     val base = "https://www.antamivi.com.cy/MeritEChannelsAccessAPIV2"
 
     embeddedServer(Netty, port = 80, host = "0.0.0.0") {
         configureHTTP()
+        configureCache()
         configureMonitoring()
         configureRouting(base)
-        configureSerialization()
+//        configureSerialization()
     }.start(wait = true)
+
+    CoroutineScope(Dispatchers.IO).launch {
+        while (true) { delay(30.min); garbageCollect() } }
 }
 
 val String.md5 get() = md5(this)

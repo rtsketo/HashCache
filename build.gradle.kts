@@ -16,6 +16,7 @@ application {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -29,6 +30,8 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.github.erdtman:java-json-canonicalization:1.1")
+
+    implementation("com.github.rtsketo:ktee:1.0.1")
 
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
