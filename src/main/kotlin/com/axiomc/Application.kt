@@ -20,7 +20,7 @@ const val JSON_CANONICALIZATION = false
 fun main(vararg args: String) {
     val base = "https://www.antamivi.com.cy/MeritEChannelsAccessAPIV2"
 
-    embeddedServer(Netty, port = 8080, host = "10.0.0.2") {
+    embeddedServer(Netty, port = 80, host = "0.0.0.0") {
         configureHTTP()
         configureMonitoring()
         configureRouting(base)
