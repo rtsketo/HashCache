@@ -23,9 +23,9 @@ import kotlin.collections.set
 
 fun Application.configureRouting(base: String) = routing {
     post("/{...}") {
-        var etag = ""
-        val callPath = call.request.path()
+        val callPath = call.request.path().lowercase()
         val callBody = call.receiveText()
+        var etag = ""
 
         responses[callBody]?.run {
             if (!timeout.isTimedOut) {

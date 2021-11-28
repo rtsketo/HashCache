@@ -8,7 +8,7 @@ object Cache {
     val responses = ConcurrentHashMap<String, Response>()
 
     operator fun String.divAssign(timeout: Long) {
-        timeouts[this] = timeout }
+        timeouts[lowercase()] = timeout }
 
     fun garbageCollect() =
         responses.forEach {
