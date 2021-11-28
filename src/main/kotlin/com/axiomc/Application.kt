@@ -22,12 +22,14 @@ import java.security.MessageDigest
 const val JSON_CANONICALIZATION = false
 val client = HttpClient(CIO) {
     install(HttpTimeout) {
+        // TODO Replace with a more appropriate amount
         requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
     } }
 
 
 fun main() {
-    val base = "https://www.antamivi.com.cy/MeritEChannelsAccessAPIV2"
+    // TODO replace with the your base URL of API
+    val base = "https://something.com/"
 
     embeddedServer(Netty, port = 80, host = "0.0.0.0") {
         configureHTTP()

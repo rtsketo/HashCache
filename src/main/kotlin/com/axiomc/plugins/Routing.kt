@@ -13,6 +13,11 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.ContentType.Text.Plain
+import io.ktor.http.HttpHeaders.Authorization
+import io.ktor.http.HttpHeaders.ETag
+import io.ktor.http.HttpStatusCode.Companion.OK
+import io.ktor.http.*
+import io.ktor.http.ContentType.Text.Plain
 import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.request.*
 import io.ktor.response.*
@@ -37,10 +42,9 @@ fun Application.configureRouting(base: String) = routing {
         } ?: run {
 
         val apiResponse: HttpResponse = client.request(base + callPath) {
-            call.request.headers.forEach { key, values ->
-                if (key == HttpHeaders.ETag) etag = values.first()
-                if (key == HttpHeaders.Authorization)
-                    values.forEach { headers.append(key, it) } }
+            call.request.headers[Authorization]?.let {
+                headers.append(Authorization, it) }
+            etag = call.request.headers[ETag] ?:""
             contentType(call.request.contentType())
             method = call.request.httpMethod
             body = callBody }
@@ -52,7 +56,7 @@ fun Application.configureRouting(base: String) = routing {
             val freshTag = responseText.asCanonJson.md5
             val headerList = mutableListOf<Pair<String, String>>()
 
-            call.response.headers.append(HttpHeaders.ETag, freshTag)
+            call.response.headers.append(ETag, freshTag)
             apiResponse.headers.forEach { key, values ->
                 if (key != "Content-Length" && key != "Content-Type")
                     values.forEach {

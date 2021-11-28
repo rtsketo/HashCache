@@ -5,5 +5,6 @@ import com.axiomc.backend.Time.min
 
 
 fun configureCache() {
-    "/api/GetMerchantList" /= 30.min
+    // TODO Replace with your endpoints
+    "/api/endpoint" /= 30.min
 }
