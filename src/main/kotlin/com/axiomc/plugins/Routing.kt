@@ -16,9 +16,6 @@ import io.ktor.http.ContentType.Text.Plain
 import io.ktor.http.HttpHeaders.Authorization
 import io.ktor.http.HttpHeaders.ETag
 import io.ktor.http.HttpStatusCode.Companion.OK
-import io.ktor.http.*
-import io.ktor.http.ContentType.Text.Plain
-import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
