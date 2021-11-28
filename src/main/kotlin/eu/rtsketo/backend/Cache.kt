@@ -1,7 +1,10 @@
-package com.axiomc.backend
+package eu.rtsketo.backend
 
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * rtsketo: 28, November, 2021
+ */
 
 object Cache {
     val timeouts = hashMapOf<String, Long>()

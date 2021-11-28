@@ -1,12 +1,12 @@
-package com.axiomc.plugins
+package eu.rtsketo.plugins
 
-import com.axiomc.asCanonJson
-import com.axiomc.backend.Cache.isTimedOut
-import com.axiomc.backend.Cache.responses
-import com.axiomc.backend.Cache.timeouts
-import com.axiomc.backend.Response
-import com.axiomc.client
-import com.axiomc.md5
+import eu.rtsketo.asCanonJson
+import eu.rtsketo.backend.Cache.isTimedOut
+import eu.rtsketo.backend.Cache.responses
+import eu.rtsketo.backend.Cache.timeouts
+import eu.rtsketo.backend.Response
+import eu.rtsketo.client
+import eu.rtsketo.md5
 import io.ktor.application.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -20,6 +20,11 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlin.collections.set
+
+
+/**
+ * rtsketo: 26, November, 2021
+ */
 
 fun Application.configureRouting(base: String) = routing {
     post("/{...}") {

@@ -1,4 +1,4 @@
-package com.axiomc.plugins
+package eu.rtsketo.plugins
 
 import io.ktor.application.*
 import io.ktor.features.*

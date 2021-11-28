@@ -1,11 +1,11 @@
-package com.axiomc
+package eu.rtsketo
 
-import com.axiomc.backend.Cache.garbageCollect
-import com.axiomc.backend.Time.min
-import com.axiomc.plugins.configureCache
-import com.axiomc.plugins.configureHTTP
-import com.axiomc.plugins.configureMonitoring
-import com.axiomc.plugins.configureRouting
+import eu.rtsketo.backend.Cache.garbageCollect
+import eu.rtsketo.backend.Time.min
+import eu.rtsketo.plugins.configureCache
+import eu.rtsketo.plugins.configureHTTP
+import eu.rtsketo.plugins.configureMonitoring
+import eu.rtsketo.plugins.configureRouting
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -18,6 +18,11 @@ import kotlinx.coroutines.launch
 import org.erdtman.jcs.JsonCanonicalizer
 import java.math.BigInteger
 import java.security.MessageDigest
+
+/**
+ * rtsketo: 26, November, 2021
+ */
+
 
 const val JSON_CANONICALIZATION = false
 val client = HttpClient(CIO) {

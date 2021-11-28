@@ -1,6 +1,6 @@
-package com.axiomc
+package eu.rtsketo
 
-import com.axiomc.plugins.configureRouting
+import eu.rtsketo.plugins.configureRouting
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.Test

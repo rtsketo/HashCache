@@ -1,7 +1,10 @@
-package com.axiomc.backend
+package eu.rtsketo.backend
 
 import io.ktor.http.*
 
+/**
+ * rtsketo: 28, November, 2021
+ */
 
 data class Response(
     val body: String,
