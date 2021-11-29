@@ -8,10 +8,10 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0"
 }
 
-group = "com.axiomc"
+group = "eu.rtsketo"
 version = "0.0.1"
 application {
-    mainClass.set("com.axiomc.ApplicationKt")
+    mainClass.set("eu.rtsketo.ApplicationKt")
 }
 
 repositories {
