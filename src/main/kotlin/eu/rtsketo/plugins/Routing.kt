@@ -15,6 +15,7 @@ import io.ktor.http.*
 import io.ktor.http.ContentType.Text.Plain
 import io.ktor.http.HttpHeaders.Authorization
 import io.ktor.http.HttpHeaders.ETag
+import io.ktor.http.HttpStatusCode.Companion.NotModified
 import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.request.*
 import io.ktor.response.*
@@ -29,31 +30,28 @@ import kotlin.collections.set
 fun Application.configureRouting(base: String) = routing {
     post("/{...}") {
         val callPath = call.request.path().lowercase()
+        val etag = call.request.headers[ETag] ?:""
         val callBody = call.receiveText()
-        var etag = ""
 
         responses[callBody]?.run {
             if (!timeout.isTimedOut) {
                 headers.forEach {
-                    call.response.headers
-                        .append(it.first, it.second) }
+                    if (it.first == ETag && it.second == etag) {
+                        call.respond(NotModified); return@run Unit }
+                    call.response.headers.append(it.first, it.second) }
                 call.respondText(body, contentType, OK)
-                responses[callBody]
             } else { responses.remove(callBody); null }
-
         } ?: run {
 
         val apiResponse: HttpResponse = client.request(base + callPath) {
-            call.request.headers[Authorization]?.let {
-                headers.append(Authorization, it) }
-            etag = call.request.headers[ETag] ?:""
+            call.request.headers[Authorization]?.let { headers.append(Authorization, it) }
             contentType(call.request.contentType())
             method = call.request.httpMethod
             body = callBody }
 
         val responseText = apiResponse.receive<String>()
         if (responseText.asCanonJson.md5 == etag)
-            call.respond(HttpStatusCode.NotModified)
+            call.respond(NotModified)
         else {
             val freshTag = responseText.asCanonJson.md5
             val headerList = mutableListOf<Pair<String, String>>()
@@ -66,12 +64,11 @@ fun Application.configureRouting(base: String) = routing {
                         call.response.headers.append(key, it) } }
             call.respondText(responseText, apiResponse.contentType(), apiResponse.status)
 
-            if (apiResponse.status == OK)
-                timeouts[callPath]?.let {
-                    responses[callBody] = Response(responseText,
-                        apiResponse.contentType() ?: Plain,
-                        headerList, it + System.currentTimeMillis())
-                }
+            if (apiResponse.status == OK) timeouts[callPath]?.let {
+                responses[callBody] = Response(responseText,
+                    apiResponse.contentType() ?: Plain,
+                    headerList, it + System.currentTimeMillis())
+            }
         }
     } }
 }
